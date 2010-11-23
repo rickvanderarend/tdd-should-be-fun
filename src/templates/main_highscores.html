@@ -1,0 +1,30 @@
+{% extends "main.html" %}
+
+{% block menu %}
+	<li><a href="/" >Home</a></li>
+	<li class="current_page_item"><a href="/highscores" >Highscores</a></li>
+	<li><a href="/tests" >Tests</a></li>
+	<li><a href="/games" >Games</a></li>								
+{% endblock %}
+
+{% block content %}
+	<div class="post" style="width: 100%">
+		<H2>Current user highscores:</H2>
+	</div>
+	<div class="post" style="width: 100%">
+	<table>
+	<tr>
+		<td><b>User</td>
+		<td><b>Score</b></td>
+		<td><b>Out of</b></td>
+	</tr>	
+    {% for score in scores %}
+	<tr>
+		<td>{{ score.user.nickname }}:</td>
+		<td>{{ score.score }}</td>
+		<td>{{ score.tests }} tests</b></td>
+	</tr>
+    {% endfor %}
+    </table>
+    </div>      
+{% endblock %}

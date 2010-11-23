@@ -1,0 +1,14 @@
+{% extends "main.html" %}
+
+{% block game_selector %}
+	{% if is_logged_in %}
+	<div id="top_navlist" class="float_left">Selected Game:
+		<select name="game_to_select" style="width: 300px;">
+			{% for game in games %}
+				<option {% if game.selected %}selected="selected"{% endif %} value="{{ game.key }}">{{ game.name }}</option>
+			{% endfor %}
+		
+		</select><input type="submit" name="command" value="SelectGame" />
+	</div>
+	{% endif %}						
+{% endblock %}

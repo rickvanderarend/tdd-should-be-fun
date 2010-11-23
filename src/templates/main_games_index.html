@@ -1,0 +1,32 @@
+{% extends "main_games.html" %}
+
+{% block content %}
+	<div class="post" style="width: 100%">
+		<H2>Current games:</H2>
+	</div>
+    {% for game in games %}
+    	<div class="post" style="width: 100%">
+    		At {{ game.date_created }},
+      		{% if game.author %}
+        		<b>{{ game.author.nickname }}</b> 
+      		{% else %}
+      			an anonymous person 
+      		{% endif %}
+      		wrote the game '{{ game.name }}' with the following start implementation:
+      		<pre>{{ game.start_implementation|escape }}</pre><br/>
+      		<a href="/games/{{ game.key }}/edit">Edit</a> - <a href="/games/{{ game.key }}/delete">Delete</a></i>
+      	</div>      		
+    {% endfor %}
+	<div class="post" style="width: 100%">
+		<H2>Add a game:</H2>
+
+	    <form action="/games" method="post">
+		    <table>
+		    <tr><td>Author:</td><td><input type="text" name="new_game_owner" value="{{ user.email }}" style="width:518px;" /></td></tr>
+		    <tr><td>Name:</td><td><input type="text" name="new_game_name" value="Game_{{ user.email }}_{% now "Y-F-jS" %}" style="width:518px;" /></td></tr>
+		    <tr><td valign="top">Start implementation:</td><td><textarea name="new_game_start_implementation" rows="3" cols="60"></textarea></td></tr>
+		    </table>
+	      	<div><input type="submit" name="command" value="Add"></div>
+	    </form>
+	</div>
+{% endblock %}

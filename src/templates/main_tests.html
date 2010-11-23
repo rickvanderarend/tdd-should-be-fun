@@ -1,0 +1,12 @@
+{% extends "main_with_game_selector.html" %}
+
+{% block menu %}
+	<li><a href="/" >Home</a></li>
+	{% if is_admin %}
+		<li><a href="/highscores" >Highscores</a></li>
+	{% endif %}
+	<li class="current_page_item"><a href="/tests" >Tests</a></li>
+	{% if is_admin %}
+		<li><a href="/games" >Games</a></li>
+	{% endif %}										
+{% endblock %}

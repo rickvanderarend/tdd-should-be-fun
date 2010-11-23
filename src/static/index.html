@@ -1,0 +1,35 @@
+<html>
+<body>
+<script>
+function testRunner (tests) {
+
+	for (i in tests) {
+		try {
+			tests[i]();
+		} 
+		catch (e)
+		{
+			document.writeln("test failed: "+ e +"<br />");
+			continue;
+		}
+		document.writeln("test succeeded!" +"<br />");
+	}
+}
+
+function TestCase()
+{
+    this.testFalse = function ()
+    {
+        throw "assertion failed"
+    }
+
+    this.testGood = function ()
+    {
+        return true; // a ok
+    }
+}
+
+testRunner(new TestCase());
+</script>
+</body>
+</html>

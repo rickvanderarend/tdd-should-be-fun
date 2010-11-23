@@ -1,0 +1,29 @@
+{% extends "main.html" %}
+
+{% block menu %}
+	<li class="current_page_item"><a href="/" >Home</a></li>
+	{% if is_admin %}
+		<li><a href="/highscores" >Highscores</a></li>
+		<li><a href="/tests" >Tests</a></li>
+	{% endif %}											
+{% endblock %}
+
+{% block content %}
+<div class="post" style="width: 100%">
+	<H2>We're sorry, an error occurred!</H2>
+	 {{ message }}
+</div>
+{% endblock %}
+
+{% block right_column %}
+	<li id="popularity-lists-1" class="widget widget_popularity_lists">
+		<h2 class="widgettitle">Populaire bijdragen</h2>
+		<ul> 
+			<li><a href="http://www.software-innovators.nl/2009/03/29/het-nut-van-pauzes/" >Het nut van pauzes</a></li>
+			<li><a href="http://www.software-innovators.nl/2008/05/26/normaliseren/" >Normaliseren</a></li>
+			<li><a href="http://www.software-innovators.nl/2008/06/03/google-web-toolkit-15/" >Google Web Toolkit 1.5</a></li>
+			<li><a href="http://www.software-innovators.nl/2008/05/31/language-cafe-followup-parallel-extensions/" >Language Cafe followup: Parallel Extensions</a></li>
+			<li><a href="http://www.software-innovators.nl/2008/06/09/niet-mocken/" >Niet mocken!</a></li>
+		</ul> 
+	</li>
+{% endblock %}

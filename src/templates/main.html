@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="nl-NL">
+
+<head profile="http://gmpg.org/xfn/11">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<title>Software innovators * Test Driven Design Game</title>
+
+<link rel="stylesheet" href="/sogyo.css" type="text/css" media="screen" />
+
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+<script type="text/javascript">
+    function insertTab(o, e)
+      {
+          var kC = e.keyCode ? e.keyCode : e.charCode ? e.charCode : e.which;
+          if (kC == 9 && !e.shiftKey && !e.ctrlKey && !e.altKey)
+          {
+              var oS = o.scrollTop;
+              if (o.setSelectionRange)
+              {
+                  var sS = o.selectionStart;
+                  var sE = o.selectionEnd;
+                  o.value = o.value.substring(0, sS) + "\t" + o.value.substr(sE);
+                  o.setSelectionRange(sS + 1, sS + 1);
+                  o.focus();
+              }
+              else if (o.createTextRange)
+              {
+                  document.selection.createRange().text = "\t";
+                  e.returnValue = false;
+              }
+              o.scrollTop = oS;
+              if (e.preventDefault)
+              {
+                  e.preventDefault();
+              }
+              return false;
+          }
+          return true;
+      }
+ </script>
+
+<style type="text/css" media="print">
+	body {
+		font-family: Arial, Sans-Serif;
+	}
+	#header, #head, #footer, .left_c, .right_c {
+		display: none;
+		background-color: #FF0000;
+	}
+</style>
+
+</head>
+<body class="home blog">
+<div id="page">
+
+
+<form action="{{ main_form_action }}" method="post">
+	<input type="hidden" name="selected_game" value="{{ selected_game.key }}" />
+	<div id="header" role="banner">
+		<div id="head_left" class="float_left">
+			<a href="/" ><img src="/Sogyologo.jpg" width="79" height="79" /></a>
+		</div>
+		<div id="top_navlist" class="float_left">
+			<ul id="nav">
+				{% block menu %}{% endblock %}					
+			</ul>
+		</div><!-- #top_navlist -->
+		<div id="top_navlist_right" class="float_right" style="text-align: right;">
+			{{ username }} | <a href="{{ login_link }}" style="color: black;" >{{ login_linktext }} &gt;</a>	
+		</div>
+		{% block game_selector %}{% endblock %}	
+	</div>
+	<div id="head">
+	
+		<div id="head_right" class="right_ch" style="padding-left: 50px;">
+		 Test_Driven_Design_should_be_fun()
+		</div>
+	</div>
+	<div id="container" style="align:center;">
+		<div class="center_c" role="main">
+			<div id="content">
+				{% block content %}{% endblock %}						
+			</div>
+		</div>
+
+	<div class="right_c" role="complementary"> 
+		<div id="sidebar2"> 
+			{% block right_column %}{% endblock %}	
+		</div> 
+	</div> 
+ 
+	</div><!-- #container -->
+</form>	
+
+<div id="footer" role="contentinfo">
+<!-- If you'd like to support WordPress, having the "powered by" link somewhere on your blog is the best way; it's our only promotion or advertising. -->
+	<div id="footer_left" class="footer_item">
+		&copy; Sogyo | Test Driven Design is een TDD game van Rick van der Arend | tel: 030 2202216 | fax: 030 2205506 | mail: <a href="&#109;&#97;ilto&#58;info&#64;so&#103;y&#111;.nl" target="_blank">&#105;&#110;fo&#64;sogy&#111;.&#110;l</a>
+	</div>
+</div>
+
+</div>
+
+</body>
+</html>

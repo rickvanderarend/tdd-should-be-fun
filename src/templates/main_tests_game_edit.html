@@ -1,0 +1,16 @@
+{% extends "main_games.html" %}
+
+{% block content %}
+	<div class="post" style="width: 100%">
+		<H2>Edit this game:</H2><br />
+		<form action="/tests/{{ selected_game.key }}/details/edit" method="post">
+			<input type="hidden" name="game_key" value="{{ selected_game.key }}" />
+	    	At {{ selected_game.date_created }}, <b>{{ selected_game.author.nickname }}</b> created:<br /><br />
+	    	<table>
+			    <tr><td>Name:</td><td><input type="text" name="game_name" value="{{ selected_game.name }}" style="width:518px;" /></td></tr>
+			    <tr><td valign="top">Start implementation:</td><td><textarea name="game_start_implementation" rows="3" cols="60">{{ selected_game.start_implementation }}</textarea></td></tr>
+		    </table>
+	      	<div><input type="submit" name="command" value="EditGameDetails"> - <input type="button" value="Cancel" onclick="location.href='/tests';"></div>
+	    </form>
+	</div>
+{% endblock %}

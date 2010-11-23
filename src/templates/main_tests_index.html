@@ -1,0 +1,31 @@
+{% extends "main_tests.html" %}
+
+{% block content %}
+	<div class="post" style="width: 100%">	
+		<H2>Game: <a href="/tests/{{ selected_game.key }}/details/edit" style="color: black; font-size: 15px;">[edit this &gt;&gt;]</a> </H2> 
+		<br />
+      	<table>
+      		<tr><td><b>Name:</b></td><td style="padding-left:12px;">{{ selected_game.name }}</</td></tr>
+      		<tr><td valign="top"><b>Start Implementation:</b></td><td><pre>{{ selected_game.start_implementation }}</pre></td></tr>
+      	</table>
+
+      	<H2>Current tests in this game:</H2>
+	</div>
+    {% for test in tests %}
+    	<div class="post" style="width: 100%">
+      		{% if test.author %}
+        		At {{ test.date_created }}, <b>{{ test.author.nickname }}</b> wrote test number {{ test.number }}:
+      		{% else %}
+      			An anonymous person wrote:
+      		{% endif %}
+      		<pre>{{ test.code|escape }}</pre><br/>
+      		<a href="/tests/{{ selected_game.key }}/{{ test.key }}/edit">Edit</a> - <a href="/tests/{{ selected_game.key }}/{{ test.key }}/delete">Delete</a> - <i>Last edited at {{ test.date_edited }} by {{ test.editor.nickname }}</i>
+      	</div>      		
+    {% endfor %}
+	<div class="post" style="width: 100%">
+		<H2>Add a test:</H2>
+
+	      <div><textarea name="new_test_code" rows="10" cols="78" ></textarea></div>
+	      <div><input type="submit" name="command" value="Add"></div>
+	</div>
+{% endblock %}

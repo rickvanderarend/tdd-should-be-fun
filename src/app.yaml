@@ -1,0 +1,38 @@
+application: sogyotdd
+version: 2
+runtime: python
+api_version: 1
+
+handlers:
+- url: /_test.*
+  script: gaeunit.py
+  
+- url: /(.*\.(gif|png|jpg|ico))
+  static_files: static/images/\1
+  upload: static/images/(.*)
+  
+- url: /(.*\.css)
+  static_files: static/css/\1
+  upload: static/css/(.*)
+
+- url: /(.*\.html)
+  static_files: static/html/\1
+  upload: static/html/(.*)
+
+- url: /(.*\.js)
+  static_files: static/js/\1
+  upload: static/js/(.*)
+
+- url: /tests.*
+  script: tests.py
+ 
+- url: /games.*
+  script: games.py
+ 
+- url: /highscores.*
+  script: highscores.py
+  login: admin
+ 
+- url: /.*
+  script: home.py
+  

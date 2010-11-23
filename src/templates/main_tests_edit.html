@@ -1,0 +1,15 @@
+{% extends "main_tests.html" %}
+
+{% block content %}
+	<div class="post" style="width: 100%">
+		<H2>Edit this test:</H2>
+		<form action="/tests/{{ test.key }}/edit" method="post">
+			<input type="hidden" name="test_key" value="{{ test.key }}" />
+	    	At {{ test.date_created }}, <b>{{ test.author.nickname }}</b> created test number {{ test.number }}:<br />
+	    	Assign new number: <input name="test_number" type="text" length="2" value="{{ test.number }}" />    
+	      	<div><textarea name="test_code" rows="3" cols="60">{{ test.code }}</textarea></div>
+	      	<i>Last edited at {{ test.date_edited }} by {{ test.author.nickname }}</i>
+	      	<div><input type="submit" name="command" value="Edit"> - <input type="button" value="Cancel" onclick="location.href='/tests';"></div>
+	    </form>
+	</div>
+{% endblock %}

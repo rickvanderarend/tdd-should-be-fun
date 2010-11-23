@@ -1,0 +1,1057 @@
+/*
+/*
+Theme Name: Software Innovators Blog Theme
+Theme URI: http://www.software-innovators.nl/
+Description: <a href="http://www.software-innovators.nl/">Software Innovators Theme</a>.
+Version: 1.0
+Author: Maudi Hansen en Peter Moor
+Author URI: http://www.sogyo.nl/
+
+/* Begin Typography & Colors */
+html {
+	overflow-y:scroll;
+}
+body {
+	font-size: 62.5%; /* Resets 1em to 10px */
+	font-family: Arial, Sans-Serif;
+	background-color: #007936;
+	color: #000;
+	text-align: center;
+}
+
+#content {
+	font-size: 1.2em;
+	}
+
+#content a, #content a:visited {
+	text-decoration: underline;
+}
+
+#content a:hover, #content a:hover:visited {
+	text-decoration: none;
+}
+
+.widecolumn .entry p {
+	font-size: 1.05em;
+}
+
+.narrowcolumn .entry, .widecolumn .entry {
+	line-height: 1.4em;
+	}
+
+.widecolumn {
+	line-height: 1.6em;
+	}
+
+.narrowcolumn .postmetadata {
+	text-align: center;
+	}
+
+.thread-alt {
+	background-color: #f8f8f8;
+}
+.thread-even {
+	background-color: white;
+}
+.depth-1 {
+border: 1px solid #ddd;
+}
+
+.even, .alt {
+
+	border-left: 1px solid #ddd;
+}
+
+small {
+	font-family: Arial, Helvetica, Sans-Serif;
+	font-size: 0.9em;
+	line-height: 1.5em;
+	}
+
+h1, h2, h3 {
+/*	font-family: 'Trebuchet MS', 'Lucida Grande', Verdana, Arial, Sans-Serif; */
+	font-weight: bold;
+	}
+
+h1 {
+	font-size: 4em;
+	text-align: center;
+	}
+
+h2 {
+	font-size: 1.6em;
+	}
+
+h2.pagetitle {
+	font-size: 1.6em;
+	}
+
+.post h2, #content h2 {
+	color: #007936;
+	margin-top:5px;
+}
+
+li 
+{
+	list-style:none;
+}
+	
+#sidebar h2, #sidebar2 h2 {
+/*	font-family: 'Lucida Grande', Verdana, Sans-Serif; */
+	color:#FFFFFF;
+	font-size: 1.3em;
+}
+
+#sidebar ul li h2 {
+	color: #007936;
+}
+
+#sidebar2 ul li h2 {
+	color: white;
+}
+
+#top_navlist {
+	font-size: 1.4em;
+	width: 680px;
+	margin: 0;
+	padding: 0;
+}
+
+#top_navlist_right {
+	font-size: 1.4em;
+	color: black;
+	width: 257px;
+	margin: 20px 20px;
+	padding: 0;
+}
+
+#nav {
+	position: absolute;
+	padding: 0;
+	margin: 17px 0 0 0;
+	list-style: none;
+	font-weight: bold;
+	text-transform: uppercase;
+}
+
+#nav li ul {
+	position: absolute;
+	padding: 0;
+	margin: 0 0 0 0;
+	list-style: none;
+	font-size: 90%;
+	font-weight: bold;
+	text-transform: uppercase;
+	left: -5000px;
+}
+
+#nav a {
+	color: #000;
+}
+
+#nav li.current_page_item a {
+	color: #007936;
+}
+
+#nav a:hover, #nav li.current_page_item a, #nav li ul li.current_page_item a {
+	color: #000;
+	color: #007936;
+	text-decoration:none;
+}
+
+#nav li {
+	float:left;
+	padding: 0 10px;
+	border-left: 1px solid #CDCDCD;
+}
+
+#nav li ul li {
+	border-left: 1px solid #FFF;
+}
+
+#nav li ul {
+	margin-left: -11px;
+	border-left: 1px solid #CDCDCD;
+}
+#nav li:hover ul, #nav li.ie_does_hover ul {
+	left: auto;
+	background-position: 0 0;
+}
+
+#nav a, #nav .was_a {
+	display: block;
+}
+
+#nav li ul li a {
+	padding-top: 20px;
+	padding-bottom: 10px;
+}
+
+h3 {
+	font-size: 1.1em;
+	}
+
+h1, h1 a, h1 a:hover, h1 a:visited {
+	text-decoration: none;
+	color: white;
+	}
+
+h2, h2 a, h2 a:visited, h3, h3 a, h3 a:visited {
+	color: #333;
+	}
+
+h2, h2 a, h2 a:hover, h2 a:visited, h3, h3 a, h3 a:hover, h3 a:visited, #sidebar h2, #sidebar2 h2, #wp-calendar caption, cite {
+	text-decoration: none;
+	}
+
+#content .entry h2{
+	color: #000;
+}
+
+#content h2.entry-title a, #content h2.entry-title a:visited, #content h2.cat-title a, #content h2.cat-title a:visited, #content ul.events li h2 a, #content ul.events li h2 a:visited {
+	font-size: 90%;
+	text-decoration:none;
+	}
+
+#content h2.entry-title a:hover, #content h2.entry-title a:visited:hover, #content h2.cat-title a:hover, #content h2.cat-title a:visited:hover, #content ul.events li h2 a:hover, #content ul.events li h2 a:visited:hover {
+	text-decoration: underline;
+	}
+
+h2.widgettitle, #sidebar h2.widgettitle, #sidebar2 h2.widgettitle {
+	font-size: 1.5em;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+h2.widgettitle a, h2.widgettitle a:hover, h2.widgettitle a:visited {
+	color: #FFF;
+	margin: 0;
+	padding: 0;
+	}
+
+.entry p a:visited {
+	color: #b85b5a;
+	}
+
+.sticky {
+	background: #f7f7f7;
+	padding: 0 10px 10px;
+	}
+.sticky h2 {
+	padding-top: 10px;
+	}
+
+.commentlist li, #commentform input, #commentform textarea {
+/*	font: 0.9em 'Lucida Grande', Verdana, Arial, Sans-Serif; */
+	font-size: 0.9em;
+	}
+.commentlist li ul li {
+	font-size: 1em;
+}
+
+.commentlist li {
+	font-weight: bold;
+}
+
+.commentlist li .avatar { 
+	float: right;
+	border: 1px solid #eee;
+	padding: 2px;
+	background: #fff;
+	}
+
+.commentlist cite, .commentlist cite a {
+	font-weight: bold;
+	font-style: normal;
+	font-size: 1.1em;
+	}
+
+.commentlist p {
+	font-weight: normal;
+	line-height: 1.5em;
+	text-transform: none;
+	}
+
+#commentform p {
+/*	font-family: 'Lucida Grande', Verdana, Arial, Sans-Serif; */
+	}
+
+.commentmetadata {
+	font-weight: normal;
+	}
+
+#sidebar, #sidebar2 {
+/*	font: 1em 'Lucida Grande', Verdana, Arial, Sans-Serif; */
+	font-size: 1.2em;
+	}
+
+small, #sidebar ul ul li, #sidebar ul ol li, #sidebar2 ul ul li, #sidebar2 ul ol li, .nocomments, .postmetadata, blockquote, strike {
+	color: #777;
+	}
+
+pre { border: solid 1px blue;
+     white-space: pre-wrap;
+	 font-size: 1.3em; 
+     color: blue; 
+     margin: 10px; 
+     padding:10px; 
+     background: #FFFFB3
+}
+
+code { font: 1.2em 'Courier New', Courier, Fixed;
+     color: #008099
+}
+	
+acronym, abbr, span.caps
+{
+	font-size: 0.9em;
+	letter-spacing: .07em;
+	}
+
+a, h2 a:hover, h3 a:hover {
+	color: #FFF;
+	text-decoration: none;
+	}
+
+#content .hentry h3 a, #content  .hentry h3 a:visited {
+	text-decoration: none;
+}
+
+#content .hentry h3 a:hover, #content  .hentry h3 a:visited:hover {
+	text-decoration: underline;
+}
+
+a:hover {
+	color: #FFF;
+	text-decoration: underline;
+	}
+
+.center_c a, .center_c a:hover, .center_c a:active, .center_c a:visited, .center_c .entry a, .center_c .entry a:hover, .center_c .entry a:active, .center_c .entry a:visited {
+	color: #007936;
+}
+
+#wp-calendar #prev a, #wp-calendar #next a {
+	font-size: 9pt;
+	}
+
+#wp-calendar a {
+	text-decoration: none;
+	}
+
+#wp-calendar caption {
+	font: bold 1.3em 'Lucida Grande', Verdana, Arial, Sans-Serif;
+	text-align: center;
+	}
+
+#wp-calendar th {
+	font-style: normal;
+	text-transform: capitalize;
+	}
+/* End Typography & Colors */
+
+
+
+/* Begin Structure */
+body {
+	margin: 0 0 20px 0;
+	padding: 0;
+	}
+
+#page {
+	background-color: white;
+	text-align: left;
+	margin: 20px auto;
+	padding: 0;
+	width: 980px;
+}
+
+#header {
+	margin: 0;
+	padding: 0;
+	height: 50px;
+	width: 980px;
+}
+
+#container {
+	background: url(/bg.png) repeat-y; 
+	margin: 1px 0 0 0;
+	padding: 0;
+	width: 980px;
+	overflow: hidden;
+}
+
+#head {
+/*	background: url(/images/bg_head.png) repeat-y; */
+	background-color: #363636;
+	clear: both;
+	padding: 0;
+	margin: 0 auto;
+	width: 980px;
+	height: 90px;
+	overflow: hidden;
+	text-align: left;
+	color: #fff;
+	font-size: 4em;
+	text-transform: uppercase;
+}
+
+#head_left {
+	margin: 0;
+	padding: 0;
+	text-align: left;
+}
+
+#head_left img {
+	margin: 0px 17px;
+}
+
+#head_right {
+	margin: 0;
+	padding: 25px 0 0 0;
+}
+
+#head_right_inner {
+	padding: 50px 20px;
+}
+
+#head_right .small {
+	font-size: 26px;
+}
+
+.narrowcolumn {
+	float: left;
+	padding: 0 0 20px 45px;
+	margin: 0px 0 10px 0;
+	width: 450px;
+	}
+
+.widecolumn {
+	padding: 10px 0 20px 0;
+	margin: 5px 0 0 150px;
+	width: 450px;
+	}
+
+.hentry, .post.hentry {
+	margin: 0 0 20px;
+}
+
+.post {
+	margin: 0 0 20px;
+	/* text-align: justify; // mag niet van Anneke :( */
+	border-bottom: 1px dashed #999;
+	padding-bottom: 20px;
+	}
+
+.post hr {
+	display: block;
+	}
+
+.widecolumn .post {
+	margin: 0;
+	}
+
+.narrowcolumn .postmetadata {
+	padding-top: 5px;
+	}
+
+.widecolumn .postmetadata {
+	margin: 30px 0;
+	}
+
+.widecolumn .smallattachment {
+	text-align: center;
+	float: left;
+	width: 128px;
+	margin: 5px 5px 5px 0px;
+}
+
+.widecolumn .attachment {
+	text-align: center;
+	margin: 5px 0px;
+}
+
+.postmetadata {
+	clear: both;
+}
+
+.clear {
+	clear: both;
+}
+
+#footer {
+	background-color: #007936;
+	padding: 0;
+	margin: 0 auto;
+	width: 980px;
+	height: 30px;
+	clear: both;
+	border: none;
+	font-weight: bold;
+	
+	position: relative;
+	
+}
+
+.footer_item {
+	color: white;
+	padding: 8px 0 0 0;
+}
+
+#footer_left {
+	text-transform: uppercase;
+	text-align: left;
+	font-size: 120%;
+	padding-left: 8px;
+}
+
+/* End Structure */
+
+
+
+/*	Begin Headers */
+h1 {
+	margin: 0;
+}
+
+h2 {
+	margin: 0;
+}
+
+h2.pagetitle {
+	margin-top: 30px;
+	text-align: center;
+}
+
+h2.search {
+	margin: 0;
+	text-align: left;
+}
+
+#sidebar h2, #sidebar2 h2 {
+	margin: 0;
+	padding: 0;
+	}
+
+h3 {
+	padding: 0;
+	margin: 30px 0 0;
+}
+
+.hentry h3 {
+	padding: 0;
+	margin: 15px 0 0;
+}
+
+h3.comments {
+	padding: 0;
+	margin: 40px auto 20px ;
+	}
+/* End Headers */
+
+
+
+/* Begin Images */
+p img {
+	padding: 0;
+	max-width: 100%;
+	}
+
+a img {
+	border: 0px;
+}
+
+#header a img {
+	margin: 17px;
+}
+/*	Using 'class="alignright"' on an image will (who would've
+	thought?!) align the image to the right. And using 'class="centered',
+	will of course center the image. This is much better than using
+	align="center", being much more futureproof (and valid) */
+
+img.centered {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	}
+
+img.alignright {
+	padding: 4px;
+	margin: 0 0 2px 7px;
+	display: inline;
+	}
+
+img.alignleft {
+	padding: 4px;
+	margin: 0 7px 2px 0;
+	display: inline;
+	}
+
+.alignright {
+	float: right;
+	}
+
+.alignleft {
+	float: left;
+	}
+
+/* End Images */
+
+
+
+/* Begin Lists
+
+	Special stylized non-IE bullets
+	Do not work in Internet Explorer, which merely default to normal bullets. */
+
+html>body .entry ul {
+	margin-left: 0px;
+	padding: 0 0 0 30px;
+	list-style: none;
+	padding-left: 10px;
+	text-indent: 0px;
+	}
+
+html>body .entry li {
+	margin: 7px 0 8px 10px;
+	list-style-type: square;
+	}
+
+
+.entry ul li:before {
+/*	content: "\00BB \0020"; */
+}
+
+.entry ol {
+	padding: 0 0 0 35px;
+	margin: 0;
+	}
+
+.entry ol li {
+	margin: 0;
+	padding: 0;
+	}
+
+.postmetadata ul, .postmetadata li {
+	display: inline;
+	list-style-type: none;
+	list-style-image: none;
+	}
+
+#sidebar2 li.widget {
+	margin-bottom: 25px;
+}
+
+#sidebar ul, #sidebar ul ol, #sidebar2 ul, #sidebar2 ul ol {
+	margin: 0;
+	padding: 0;
+	}
+
+#sidebar ul li, #sidebar2 ul li {
+	list-style-type: none;
+	list-style-image: none;
+	margin: 5px 0;
+	padding: 5px 0 7px 5px;
+}
+
+#sidebar ul li.current_page_item, #sidebar ul li.current_page_ancestor, #sidebar ul li.current-cat {
+	background-color: white;
+}
+
+#sidebar ul li.page_item ul, #sidebar ul li.cat-item ul {
+	display: block;
+}
+
+#sidebar ul li.current_page_item ul, #sidebar ul li.current_page_ancestor ul, #sidebar ul li.current_page_parent ul, #sidebar ul li.current-cat ul, #sidebar ul li.current-cat-parent ul {
+	display: block;
+}
+
+#sidebar ul p, #sidebar ul select, #sidebar2 ul p, #sidebar2 ul select {
+	margin: 5px 0 8px;
+	}
+
+#sidebar ul ul, #sidebar ul ol, #sidebar2 ul ul, #sidebar2 ul ol {
+	margin: 5px 0 0 0;
+	}
+
+#sidebar ul ul ul, #sidebar ul ol, #sidebar2 ul ul ul, #sidebar2 ul ol {
+	margin: 0 0 0 10px;
+	}
+
+ol li, #sidebar ul ol li, #sidebar2 ul ol li {
+	list-style: decimal outside;
+	}
+
+#sidebar ul ul li, #sidebar ul ol li, #sidebar2 ul ul li, #sidebar2 ul ol li {
+	margin: 0;
+	padding: 3px 0 3px 10px;
+	}
+/* End Entry Lists */
+
+
+
+/* Begin Form Elements */
+#searchform {
+	margin: 17px 0 0;
+	padding: 0 0 0 20px;
+	}
+
+#searchform #s {
+	width: 14em;
+	height: 1.2em;
+	padding: 0;
+	margin: -1px 0 0 0;
+	border: 1px solid #DDDDDD;
+}
+
+
+#sidebar #searchform #s, #sidebar2 #searchform #s {
+	width: 108px;
+	padding: 2px;
+	}
+
+#sidebar #searchsubmit, #sidebar2 #searchsubmit {
+	padding: 1px;
+	}
+
+select {
+	width: 130px;
+	}
+
+#commentform input {
+	width: 170px;
+	padding: 2px;
+	margin: 5px 5px 1px 0;
+	}
+
+#commentform {
+	margin: 5px 10px 0 0;
+	}
+#commentform textarea {
+	width: 100%;
+	padding: 2px;
+	}
+#respond:after {
+		content: "."; 
+	    display: block; 
+	    height: 0; 
+	    clear: both; 
+	    visibility: hidden;
+	}
+#commentform #submit {
+	margin: 0 0 5px auto;
+	float: right;
+	}
+/* End Form Elements */
+
+
+
+/* Begin Comments*/
+.alt {
+	margin: 0;
+	padding: 10px;
+	}
+
+.commentlist {
+	padding: 0;
+	/* text-align: justify; // mag niet van Anneke :( */
+	}
+
+.commentlist li {
+	margin: 15px 0 10px;
+	padding: 5px 5px 10px 10px;
+	list-style: none;
+
+	}
+.commentlist li ul li { 
+	margin-right: -5px;
+	margin-left: 10px;
+}
+
+.commentlist p {
+	margin: 10px 5px 10px 0;
+}
+.children { padding: 0; }
+
+#commentform p {
+	margin: 5px 0;
+	}
+
+.nocomments {
+	text-align: center;
+	margin: 0;
+	padding: 0;
+	}
+
+.commentmetadata {
+	margin: 0;
+	display: block;
+	}
+/* End Comments */
+
+
+
+/* Begin Sidebar */
+#sidebar {
+	padding: 20px 0 150px 0;
+	margin: 0 0 0 20px;
+}
+
+#sidebar2, #content {
+	padding: 20px 0 150px 0;
+	margin: 0 20px;
+}
+
+#sidebar form, #sidebar2 form {
+	margin: 0;
+	}
+	
+
+#sidebar a {
+	display:block;
+/*	font-family:'Lucida Grande',Verdana,Sans-Serif; */
+	font-size:1.3em;
+	font-weight: bold;
+	color: #363636;
+}
+
+#sidebar ul li ul a {
+	font-size:1.1em;
+}
+
+#sidebar .current_page_item a, #sidebar .current-cat a {
+	color: #007936;
+}
+
+#sidebar li.current_page_item ul li a, #sidebar li.current-cat ul li a {
+	color: #000;
+}
+
+
+#sidebar a:hover, #sidebar li.current_page_item ul li a:hover, #sidebar li.current-cat ul li a:hover {
+	color: #007936;
+	text-decoration: none;
+}
+
+/* End Sidebar */
+
+
+
+
+
+/* Begin Various Tags & Classes */
+acronym, abbr, span.caps {
+	cursor: help;
+	}
+
+acronym, abbr {
+	border-bottom: 1px dashed #999;
+	}
+
+blockquote {
+	margin: 15px 30px 0 10px;
+	padding-left: 20px;
+	border-left: 5px solid #ddd;
+	}
+
+blockquote cite {
+	margin: 5px 0 0;
+	display: block;
+	}
+
+.center {
+	text-align: center;
+	}
+
+.hidden {
+	display: none;
+	}
+	
+.screen-reader-text {
+     position: absolute;
+     left: -1000em;
+}
+
+hr {
+	display: none;
+	}
+
+a img {
+	border: none;
+	}
+
+.navigation {
+	display: block;
+	text-align: center;
+	margin-top: 10px;
+	margin-bottom: 60px;
+	}
+/* End Various Tags & Classes*/
+
+
+
+/* Captions */
+.aligncenter,
+div.aligncenter {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.wp-caption {
+	border: 1px solid #ddd;
+	text-align: center;
+	background-color: #f3f3f3;
+	padding-top: 4px;
+	margin: 10px;
+	-moz-border-radius: 3px;
+	-khtml-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+}
+
+.wp-caption img {
+	margin: 0;
+	padding: 0;
+	border: 0 none;
+}
+
+.wp-caption p.wp-caption-text {
+	font-size: 11px;
+	line-height: 17px;
+	padding: 0 4px 5px;
+	margin: 0;
+}
+/* End captions */
+
+
+.float_left {
+	float: left;
+}
+
+.float_right {
+	float: right;
+}
+
+.left_c {
+	float: left;
+	width: 210px;
+	margin-right: 1px;
+}
+
+.left_ch {
+	float: left;
+	width: 210px;
+	margin-right: 1px;
+}
+
+.center_c {
+	float: left;
+	align: center;
+/*	width: 950px; */
+	width: 720px;
+	margin-right: 1px;
+}
+
+.right_c {
+	float: right;
+	width: 257px; /* eigenlijk 258, maar hiermee wordt een vreemd probleem bij Mirjam opgelost */
+	padding-left: -1px;
+}
+
+.right_ch {
+	float: left;
+	width: 1000px; /* eigenlijk 768, maar hiermee wordt een vreemd probleem bij Mirjam opgelost */
+	padding-left: 20px;
+}
+
+div.widget_text {
+	color: #FFFFFF;
+	margin: 10px 0;
+	padding: 0;
+}
+
+div.widget_blocktext {
+	position: relative;
+	padding: 0;
+	margin: 10px 0;
+	background-color: #007936;
+	color: #FFFFFF;
+	text-transform: uppercase;
+}
+
+div.widget_blocktext div.blockline1 {
+	margin-top: -2em;
+}
+
+div.widget_blocktext div.blockline2 {
+	margin-top: 1em;
+}
+
+img.widget_image_link {
+	margin: 10px 0;
+	padding: 0;
+}
+
+img.widget_image {
+	border-width: 0;
+	margin: 0;
+	padding: 0;
+}
+
+#sidebar2 .date, #sidebar2 .rss-date, #sidebar2 .cpostdate {
+	font-size: 0.9em;
+	color: #fff;
+}
+
+#sidebar2 ul li a{
+	color: #007936;
+}
+
+#sidebar2 ul li .zwartelink a {
+	color: #000000;
+}
+.subtitle {
+	font-size: 90%;
+	padding-top: 0px;
+	margin-top: 0px;
+}
+
+ul.events {
+	padding-left: 0;
+	margin-left: 0;
+}
+
+.right_c ul.events li, .center_c ul.events li p, #sidebar2 li.widget ul li{
+	border-bottom: dashed 1px #E1E1E1;
+	margin: 0;
+	padding-bottom: 0;
+	color: #000000;
+}
+
+div.entry-content {
+	border-bottom: dashed 1px #E1E1E1;
+	margin: 10px 0;
+}
+
+div.entry-content p {
+	padding-bottom: 10px;
+}
+
+.center_c ul.events li{
+	padding-top: 10px;
+}
+
+.seperator_line {
+	border-bottom: 1px solid #E1E1E1;
+	margin: 30px 0 10px 0;
+}
+
+.blogger { padding-bottom: 3px; vertical-align: middle; }
+.blogger-image { width: 30px; float: left; }
+.blogger-text { vertical-align: middle; padding-left: 30px; }
+.entry-meta{background:#f6f7f8;border-bottom:1px solid #CDCDCD;border-top:1px solid #CDCDCD;color:#363636;font-size:0.9em;margin:1em 0 5em;padding:0.2em 0.5em;text-align:center;}
+.meta-sep{padding:0 0 0 0.6em;}
+#content .post h2 a, #content .post h2 a:visited {text-decoration: none;}
+#content .post h2 a:hover, #content .post h2 a:visited:hover {text-decoration: underline;}
+.post h4 {margin: 0;}
+.post h2.entry-title {margin:0;}
