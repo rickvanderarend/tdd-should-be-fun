@@ -12,7 +12,7 @@ def tester(testRun, implementation):
         #print 'entering implementationrun'
         #pp.pprint(global_scope)
         #pp.pprint(local_scope)
-        print replace_dangerous_statements(remove_carriage_return(implementation.code))# in global_scope, local_scope
+        exec replace_dangerous_statements(remove_carriage_return(implementation.code)) in global_scope, local_scope
         #exec replace_dangerous_statements(remove_carriage_return(testRun.implementation.code)) in global_scope, local_scope
         
         try:

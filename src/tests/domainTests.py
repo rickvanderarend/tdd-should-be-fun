@@ -16,20 +16,17 @@ class Test(unittest.TestCase):
     def test_Game_name_gets_a_default_value(self):
         author = users.User("author@example.com")
         time = datetime.now()
-        game = Game.create(None, author, time)
+        game = Game.Create(author = author, time = time)
         assert(game.name == "Game_" + str(author) + "_" + str(time))
 
     def test_GameRun_game_author_stays_the_same(self):
         author = users.User("author@example.com")
-        time = datetime.now()
-        game = Game.create(None, author, time)
+        game = Game.Create(author = author)
         
         player = users.User("player@example.com")
-        gameRun = game.get_run(player) 
+        gameRun = game.GetLastRun(player) 
         
         assert(gameRun.game.author == author)  
-    
-    #def test_
 
 
 if __name__ == "__main__":

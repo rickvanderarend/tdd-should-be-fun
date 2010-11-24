@@ -15,30 +15,20 @@ from model.domain import GameRun
 class Test(unittest.TestCase):
     
     def test_simple_game_without_tests_succeeds_immediately(self):
-        author = users.User("author@example.com")
-        player = users.User("player@example.com")
-        time = datetime.now()
-        game = Game.create(None, author, time)
-        gameRun = game.get_run(player)
+        gameRun = Game.Create().GetLastRun()
         
         assert(not gameRun.is_finished())
         
-        gameRun.make_attempt("test = true")
+        gameRun.attempt("test = true")
         
         assert(gameRun.is_finished())
 
     def test_simple_game_with_one_test_should_not_succeed_immediately(self):
-        author = users.User("author@example.com")
-        player = users.User("player@example.com")
-        time = datetime.now()
-        game = Game.create(None, author, time)
-        
-        game.add_test("assert(result)")
-        gameRun = game.get_run(player)
+        gameRun = Game.Create().AddTest("assert(result)").GetLastRun()
 
         assert(not gameRun.is_finished())
         
-        gameRun.make_attempt("result = false")       
+        gameRun.attempt("result = false")       
         
         assert(not gameRun.is_finished())
 

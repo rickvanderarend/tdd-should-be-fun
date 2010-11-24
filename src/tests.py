@@ -16,15 +16,7 @@ class TestsPage(TddPage):
         self.render_with("main_tests_" + view, self.template_values)
     
     def get_tests(self):       
-        return self.template_values['selected_game'].get_tests()
-        #tests_query = Test.all().order('number')
-        #tests = tests_query.fetch(10)
-        
-#    def get(self):
-#        template_values = self.get_default_template_values()
-#        template_values['tests'] = self.get_tests()
-
-#        self.render_with('tests', template_values)
+        return self.template_values['selected_game'].GetTests()
 
     def delete(self, key):
         db.delete(key)
@@ -85,7 +77,7 @@ class TestsPage(TddPage):
         
         if command == "EditGameDetails":  
             game.name = self.request.get('game_name')
-            game.set_start_implementation(self.request.get('game_start_implementation'))
+            game.SetStartImplementation(self.request.get('game_start_implementation'))
             game.put()
         
         tests = self.get_tests()
@@ -94,7 +86,7 @@ class TestsPage(TddPage):
             number_of_tests += 1
         
         if command == "Add":
-            game.add_test(self.request.get('new_test_code'))
+            game.AddTest(self.request.get('new_test_code'))
         if command == "Edit":
             test = db.get(self.request.get('test_key'))   
             test.code = self.request.get('test_code')

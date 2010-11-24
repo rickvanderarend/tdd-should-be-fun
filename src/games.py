@@ -57,12 +57,12 @@ class GamesPage(TddPage):
             author = users.get_current_user()
         
         if command == "Add":
-            game = Game.create(self.request.get('new_game_name'), author)
-            game.set_start_implementation(self.request.get('new_game_start_implementation'))
+            game = Game.Create(self.request.get('new_game_name'), author)
+            game.SetStartImplementation(self.request.get('new_game_start_implementation'))
         if command == "Edit":
             game = db.get(self.request.get('game_key'))   
             game.name = self.request.get('game_name')
-            game.set_start_implementation(self.request.get('game_start_implementation'))
+            game.SetStartImplementation(self.request.get('game_start_implementation'))
                 
         game.put()
         

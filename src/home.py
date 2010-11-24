@@ -38,8 +38,8 @@ class MainPage(TddPage):
         if template_values['is_logged_in']:
             game = template_values['selected_game']
             
-            gameRun = game.get_run(users.get_current_user())             
-            tests =  game.get_tests()
+            gameRun = game.GetLastRun(users.get_current_user())             
+            tests =  game.GetTests()
                         
             if self.request.get('command') == "Test":         
                 is_attempt = True
@@ -95,7 +95,7 @@ class MainPage(TddPage):
             number_of_tests = gameRun.number_of_tests_shown
         else:
             template_values['playerName'] = "Anonymous"
-            template_values['new_test'] = template_values['selected_game'].get_tests().get();
+            template_values['new_test'] = template_values['selected_game'].GetTests().get();
             template_values['game_show_input'] = True;
             template_values['game_current_input'] = template_values['selected_game'].start_implementation;
              

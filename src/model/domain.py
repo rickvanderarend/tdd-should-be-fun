@@ -1,6 +1,6 @@
 from google.appengine.ext import db
 from google.appengine.api import users
-
+import re
 from datetime import datetime
 
 class Game(db.Model):
@@ -12,28 +12,36 @@ class Game(db.Model):
     number_of_tests = db.IntegerProperty()
 
     @classmethod
-    def create(cls, name, author = users.get_current_user(), time = datetime.now()):
+    def Create(cls, name = None, author = users.get_current_user(), time = datetime.now()):
         game = cls()
         game.name = name if not name is None else "Game_" + str(author) + "_" + str(time)
         game.author = author
         game.published = True   
         game.date_created = time
         game.number_of_tests = 0
-        game.put()
         return game
     
-    def publish(self):
+    def Publish(self):
         self.published = True
+        return self
         
-    def set_start_implementation(self, impl):
+    def SetStartImplementation(self, impl):
         self.start_implementation = impl
+        return self
     
-    def get_tests(self):
+    def GetTests(self):
         return db.GqlQuery("SELECT * FROM Test Where game = :1 ORDER BY number ASC", self);
     
-    def add_test(self, code):
+    def AddTest(self, code):
         new_test = Test()
+        if self.number_of_tests is None:
+            self.number_of_tests = self.GetTests().count(1000)
+        
+        self.number_of_tests = self.number_of_tests + 1        
+        self.save()
+
         new_test.game = self
+        new_test.number = self.number_of_tests
         
         if users.get_current_user():
             new_test.author = users.get_current_user()
@@ -41,16 +49,17 @@ class Game(db.Model):
             new_test.editor = users.get_current_user()
 
         new_test.code = code
-        self.number_of_tests = self.number_of_tests + 1
-        new_test.number = self.number_of_tests
         new_test.put()
-        self.put()
+        return self
     
-    def start_run(self, playerName, player = users.get_current_user()):
+    def Run(self, playerName, player = users.get_current_user()):
+        if not self.is_saved():
+            self.save()
+        
         gameRun = GameRun()
         gameRun.game = self
         gameRun.number_of_tests_shown = 1
-        gameRun.number_of_tests = 0
+        gameRun.number_of_tests_ok = 0
         gameRun.player = player
         gameRun.playerName = playerName
         gameRun.datetime_started = datetime.now()
@@ -60,27 +69,26 @@ class Game(db.Model):
         
         return gameRun
     
-    def get_run(self, player):
+    def GetLastRun(self, player = users.get_current_user()):
         gameRun = None
         try :
             gameRun = db.GqlQuery("Select * From GameRun Where game = :1 AND player = :2 Order by datetime_lastaction DESC", self, player).get()
         except:
             gameRun = None
 
-        #print gameRun.game.name
-
         if gameRun == None:
-            gameRun = self.start_run(player.nickname(), player)
+            gameRun = self.Run(player.nickname(), player)
         else:
             if gameRun.number_of_tests_shown is None:
-                gameRun.number_of_tests_shown = gameRun.number_of_tests
+                gameRun.number_of_tests_shown = gameRun.number_of_tests_ok
         
         return gameRun
     
 class GameRun(db.Model):
     game = db.ReferenceProperty(Game) 
     number_of_tests_shown = db.IntegerProperty()
-    number_of_tries = db.IntegerProperty()    
+    number_of_tests_ok = db.IntegerProperty() # deprecate as soon as possible
+    number_of_tries = db.IntegerProperty()
     player = db.UserProperty()
     playerName = db.StringProperty()
     datetime_started = db.DateTimeProperty()
@@ -100,8 +108,8 @@ class GameRun(db.Model):
     def is_finished(self):
         return self.finished
     
-    def make_attempt(self, code):
-        finished = (self.game.number_of_tests == 0)
+    def attempt(self, code):
+        self.finished = (self.game.number_of_tests == 0)
     
 class Test(db.Model):
     game = db.ReferenceProperty(Game) 
@@ -111,6 +119,60 @@ class Test(db.Model):
     date_created = db.DateTimeProperty()
     editor = db.UserProperty()
     date_edited = db.DateTimeProperty(auto_now_add=True)
+    
+    def test(self, implementation):
+        testRun = TestRun()
+        testRun.result = False
+        local_scope = {}
+        global_scope = self.get_global_scope()
+        try:
+            exec self.replace_dangerous_statements(self.remove_carriage_return(implementation.code)) in global_scope, local_scope           
+            try:
+                exec self.remove_carriage_return(testRun.test.code) in global_scope.update(local_scope), local_scope
+                testRun.result = True
+            except AssertionError, inst:
+                testRun.error = "Assertion failed: " + str(inst);
+            except SyntaxError, inst:
+                testRun.error = "Parsing the test failed: " + str(inst);
+            except Exception, inst:
+                testRun.error = "Running the test failed: " + str(inst);
+    
+        except SyntaxError, inst:
+            testRun.error = "Parsing the implementation failed: " + str(inst);
+        except Exception, inst:
+            testRun.error = "Couldn't execute your implementation: " + str(inst);
+        
+        return testRun
+    
+    def replace_dangerous_statements(self, code):
+        p = re.compile( '(\W|^)(eval|exec|import)(\W|$)')
+        return p.sub( '#', code)
+    
+    def remove_carriage_return(self, input):
+        return input.replace("\r", ""); 
+    
+    def get_global_scope(self):
+        global_scope = {}
+        global_scope['__builtins__'] = {}
+        whitelist = ['bytearray','IndexError','all','help','vars','SyntaxError','unicode','UnicodeDecodeError','isinstance', 'hasattr', 'getattr'
+                     'copyright','NameError','BytesWarning','dict','oct','bin','StandardError','format','repr','sorted','False',
+                     'RuntimeWarning','list','iter','Warning','round','cmp','set','bytes','reduce','intern','issubclass','Ellipsis',
+                     'EOFError','BufferError','slice','FloatingPointError','sum','abs','print','True','FutureWarning','ImportWarning',
+                     'None','hash','ReferenceError','len','credits','frozenset','ord','super','TypeError','license','KeyboardInterrupt',
+                     'UserWarning','filter','range','staticmethod','SystemError','BaseException','pow','RuntimeError','float',
+                     'MemoryError','StopIteration','divmod','enumerate','apply','LookupError','basestring','UnicodeError','zip','hex',
+                     'long','next','ImportError','chr','xrange','type','Exception','tuple','UnicodeTranslateError','reversed',
+                     'UnicodeEncodeError','IOError','SyntaxWarning','ArithmeticError','str','property','GeneratorExit','int','KeyError',
+                     'coerce','PendingDeprecationWarning','EnvironmentError','unichr','id','OSError','DeprecationWarning','min',
+                     'UnicodeWarning','any','complex','bool','ValueError','NotImplemented','map','buffer','max','object','TabError',
+                     'ZeroDivisionError','IndentationError','AssertionError','classmethod','UnboundLocalError','NotImplementedError',
+                     'AttributeError','OverflowError','WindowsError','__name__']
+        
+        for key in __builtins__:
+            if key in whitelist:
+                global_scope['__builtins__'][key] = __builtins__[key]
+        
+        return global_scope
     
 class Implementation(db.Model):
     gameRun = db.ReferenceProperty(GameRun) 
