@@ -24,7 +24,7 @@ class Test(unittest.TestCase):
         game = Game.Create(author = author)
         
         player = users.User("player@example.com")
-        gameRun = game.GetLastRun(player) 
+        gameRun = game.Play(player = player) 
         
         assert(gameRun.game.author == author)  
 

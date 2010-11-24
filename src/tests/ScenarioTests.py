@@ -15,20 +15,20 @@ from model.domain import GameRun
 class Test(unittest.TestCase):
     
     def test_simple_game_without_tests_succeeds_immediately(self):
-        gameRun = Game.Create().GetLastRun()
+        gameRun = Game.Create().Play()
         
         assert(not gameRun.is_finished())
         
-        gameRun.attempt("test = true")
+        gameRun.GetResultsOfNewTestRun("test = true")
         
         assert(gameRun.is_finished())
 
     def test_simple_game_with_one_test_should_not_succeed_immediately(self):
-        gameRun = Game.Create().AddTest("assert(result)").GetLastRun()
+        gameRun = Game.Create().AddTest("assert(result)").Play()
 
         assert(not gameRun.is_finished())
         
-        gameRun.attempt("result = false")       
+        gameRun.GetResultsOfNewTestRun("result = false")       
         
         assert(not gameRun.is_finished())
 

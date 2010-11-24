@@ -1,7 +1,7 @@
 {% extends "main_with_game_selector.html" %}
 
 {% block menu %}
-	<li class="current_page_item"><a href="/" >Home</a></li>
+	<li class="current_page_item"><a href="/" >Play</a></li>
 	{% if is_admin %}
 		<li><a href="/highscores" >Highscores</a></li>
 	{% endif %}
@@ -19,7 +19,7 @@
 	 <i>You have made <b>{{ game_tries }}</b> attempt{{ game_tries|pluralize }} up until now 
 	 and you are working on <b>{{ game_number_of_tests }}</b> test{{ game_number_of_tests|pluralize }}:</i>
 </div>
-{% for testresult in testresults %}
+{% for testresult in results.test_results %}
 	<div style="background-color:{% if testresult.result %}green{% else %}red{% endif %}; border: solid black 1px;">
 		<table><tr><td><div style="color: black; padding: 1px 10px 1px 10px; font-size: 25px;">{{ testresult.test.number }}</div></td>
 		<td><div style="color: white; padding: 1px 10px 1px 10px; width:620px;"><pre>{{ testresult.test.code }}</pre></div></td></tr>
@@ -29,7 +29,7 @@
 		</table>
 	</div>
 {% endfor %}
-{% if new_test %}
+{% if results.new_test %}
 	<div style="background-color:grey; border: solid black 1px;">
 		<table><tr><td><div style="color: black; padding: 1px 10px 1px 10px; font-size: 25px;">{{ new_test.number }}</div></td>
 		<td><div style="color: white; padding: 1px 10px 1px 10px;"><pre>{{ new_test.code }}</pre></div></td></tr>
@@ -39,7 +39,7 @@
 {% if game_show_input %}
 <div style="padding: 5px;"><h2>Your implementation:</h2></div>
 
-  <div>Your name (can be used for highscores): <input type="test" name="playerName" value="{% if playerName %}{{ playerName }}{% else %}Anonymous{% endif %}"></div><br />
+  <div>Your name (can be used for highscores): <input type="test" name="playerName" value="{% if playerName %}{{ playerName }}{% else %}Anonymous{% endif %}" {% if is_logged_in %} {% else %}disabled{% endif %}></div><br />
   <div><textarea name="code" {% if is_logged_in %}rows="20"{% else %}rows="10"{% endif %} cols="81" onkeydown="insertTab(this, event);">{{ game_current_input }}</textarea></div>
   <div><input type="submit" name="command" value="Test" {% if is_logged_in %} {% else %}disabled{% endif %}>{% if is_logged_in %} - <input type="submit" name="command" value="GetTheStartImplementationAgain"/>{% else %} - Please <a href="{{ login_link }}" style="color: black;" >login</a> to play (Google account required / Google apps account not accepted){% endif %}</div><br />
 
