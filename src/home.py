@@ -34,7 +34,7 @@ class MainPage(TddPage):
                 template_values['results'] = gameRun.GetCurrentTestResults() 
                     
             template_values['game_current_input'] = template_values['results']['for'].code;           
-            template_values['game_show_input'] = not gameRun.is_finished()            
+            template_values['game_show_input'] = not gameRun.IsFinished()            
             template_values['game_number_of_tests'] = str(gameRun.number_of_tests_shown);
             template_values['game_tries'] = str(gameRun.number_of_tries);         
             

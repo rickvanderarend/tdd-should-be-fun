@@ -136,7 +136,7 @@ class GameRun(db.Model):
         self.SaveIfNotSaved()
         return Implementation(gameRun = self, code = self.game.start_implementation, author = self.player, date_created = datetime.now())
         
-    def is_finished(self):
+    def IsFinished(self):
         return self.finished
     
     def GetCurrentNumberOfTries(self):
