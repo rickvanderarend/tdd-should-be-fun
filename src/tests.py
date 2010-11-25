@@ -1,11 +1,14 @@
+'''
+Created on 25 nov. 2010
+
+@author: rickvanderarend
+'''
 from google.appengine.api import users
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext import db
-from model.domain import Test
 from TddPage import TddPage
 from datetime import datetime
-from model.domain import Game
 
 class TestsPage(TddPage):
     

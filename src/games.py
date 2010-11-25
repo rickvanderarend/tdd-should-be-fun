@@ -1,10 +1,13 @@
+'''
+Created on 25 nov. 2010
+
+@author: rickvanderarend
+'''
 from google.appengine.api import users
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext import db
-from model.domain import Test
 from TddPage import TddPage
-from datetime import datetime
 from model.domain import Game
 
 class GamesPage(TddPage):
@@ -17,7 +20,7 @@ class GamesPage(TddPage):
 
     def delete(self, key):
         db.delete(key)
-        self.template_values['game'] = self.add_selected_game(self.template_values)
+        self.refresh_selected_game()
         return "index"       
 
     def edit(self, key):
@@ -35,8 +38,7 @@ class GamesPage(TddPage):
         self.template_values = self.get_default_template_values()
         
         if command == 'delete' and key <> "":
-            view = self.delete(key)
-            
+            view = self.delete(key)           
         elif command == 'edit' and key <> "":
             view = self.edit(key)
         elif command == 'view' and key <> "":
@@ -53,20 +55,21 @@ class GamesPage(TddPage):
        
         try:
             author = users.User(self.request.get('new_game_author'))
-        except Exception, inst:
+        except:
             author = users.get_current_user()
         
         if command == "Add":
-            game = Game.Create(self.request.get('new_game_name'), author)
-            game.SetStartImplementation(self.request.get('new_game_start_implementation'))
+            game = Game.Create(name = self.request.get('new_game_name'), 
+                               author = author, 
+                               start_implementation = self.request.get('new_game_start_implementation'))
         if command == "Edit":
             game = db.get(self.request.get('game_key'))   
-            game.name = self.request.get('game_name')
+            game.ChangeName(self.request.get('game_name'))
             game.SetStartImplementation(self.request.get('game_start_implementation'))
                 
         game.put()
         
-        self.template_values = self.add_selected_game(self.template_values)
+        self.refresh_selected_game()
         self.render_with_tests('index')
         
         

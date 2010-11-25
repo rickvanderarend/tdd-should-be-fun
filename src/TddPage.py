@@ -1,3 +1,8 @@
+'''
+Created on 25 nov. 2010
+
+@author: rickvanderarend
+'''
 import os
 from google.appengine.ext import webapp
 from google.appengine.api import users
@@ -39,6 +44,8 @@ class TddPage(webapp.RequestHandler):
     def render_error_with(self, template_values):
         return self.render_with('main_error', template_values)
 
+    def refresh_selected_game(self):
+        self.template_values = self.add_selected_game(self.template_values)
 
     def set_selected_game(self, selected_game_key):
         self.selected_game = selected_game_key
@@ -51,7 +58,7 @@ class TddPage(webapp.RequestHandler):
         n = 0
 
         for agame in games:
-            print str(n) +": "+ agame.name
+            #print str(n) +": "+ agame.name
             if not agame.published:
                 continue
             n += 1
@@ -59,35 +66,25 @@ class TddPage(webapp.RequestHandler):
         template_values['games'] = [None] * n
         n = 0
         game = None           
-        #print "I"+ self.request.get('command') +"I"
-        #print "I"+ self.request.get('selected_game') +"I"
-        #print "I"+ self.request.get('game_to_select') +"I"
+        
         for agame in games:
-            print str(n) +": "+ agame.name
+            #print str(n) +": "+ agame.name
             if not agame.published:
                 continue
             
             if game is None:
-                #print "game is not none I"
-                #not(self.request.get('selectAnotherGame') is None) and
-                if  (self.request.get('command') == "SelectGame"):
-                    
+                if  (self.request.get('command') == "SelectGame"):                  
                     if (str(agame.key()) ==  self.request.get('game_to_select')):  
                         game = agame
                         agame.selected = True
-                        #print "I selected gts "+ self.request.get('game_to_select') +"I"
                 elif not (self.get_selected_game() is None):
                     if (str(agame.key()) ==  self.get_selected_game()):
                         game = agame
                         agame.selected = True
-                        #print "I selected sg "+ self.request.get('selected_game') +"I"
             
             template_values['games'][n] = agame
-            print str(n) +": "+ template_values['games'][n].name
+            #print str(n) +": "+ template_values['games'][n].name
             n += 1
-        
-        #print "'"+self.get_selected_game()+"'"
-        #print "'"+self.request.get('selected_game')+"'"
         
         myowngame = None
         

@@ -1,6 +1,11 @@
+'''
+Created on 25 nov. 2010
+
+@author: rickvanderarend
+'''
+import re
 from google.appengine.ext import db
 from google.appengine.api import users
-import re
 from datetime import datetime
 
 class Game(db.Model):
@@ -12,7 +17,7 @@ class Game(db.Model):
     number_of_tests = db.IntegerProperty()
 
     @classmethod
-    def Create(cls, name = None, author = users.get_current_user(), time = datetime.now()):
+    def Create(cls, name = None, author = users.get_current_user(), start_implementation = '', time = datetime.now()):
         game = cls()
         game.name = name if not name is None else "Game_" + str(author) + "_" + str(time)
         game.author = author
@@ -20,6 +25,10 @@ class Game(db.Model):
         game.date_created = time
         game.number_of_tests = 0
         return game
+    
+    def ChangeName(self, name):
+        self.name = name
+        return self
     
     def Publish(self):
         self.published = True
@@ -285,4 +294,11 @@ class TestRun(db.Model):
     error = db.StringProperty()
     tester = db.UserProperty()
     date_created = db.DateTimeProperty()
+    
+    def HasImplementation(self):
+        try:
+            return not self.implementation is None
+        except: 
+            return False
+    
 

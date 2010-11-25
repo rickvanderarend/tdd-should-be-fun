@@ -1,8 +1,12 @@
+'''
+Created on 25 nov. 2010
+
+@author: rickvanderarend
+'''
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext import db
 
-from model.domain import TestRun
 from TddPage import TddPage
 import pprint
 
@@ -23,7 +27,7 @@ class HighScoresPage(TddPage):
         
         impl_scores = {}
         for testrun in testruns:
-            if testrun.implementation:
+            if testrun.HasImplementation():
                 key = str(testrun.implementation.author) +", "+ str(testrun.implementation.date_created)
                 if not (key in impl_scores):
                     impl_scores[key] = {'user' : testrun.implementation.author, 'score' : 0, 'tests' : 0 }
@@ -34,7 +38,7 @@ class HighScoresPage(TddPage):
         
         template_values['scores'] = sorted(impl_scores.values(), cmp_scores, None, True) 
         
-        self.response.out.write(pp.pprint(template_values['scores'])) 
+        #self.response.out.write(pp.pprint(template_values['scores'])) 
         
         self.render_with('main_highscores', template_values)  
 
