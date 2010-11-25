@@ -37,6 +37,9 @@ class Game(db.Model):
     def SetStartImplementation(self, impl):
         self.start_implementation = impl
         return self
+
+    def GetNumberOfTests(self):
+        return (self.number_of_tests) if not (self.number_of_tests is None) else 0
     
     def GetTests(self):
         return db.GqlQuery("SELECT * FROM Test Where game = :1 ORDER BY number ASC", self);
@@ -61,6 +64,8 @@ class Game(db.Model):
         new_test.put()
         return self
     
+    def IsAuthor(self, user):
+        return not(self.author is None) and self.author == user
 
     def SaveIfNotSaved(self):
         if not self.is_saved():
@@ -111,7 +116,6 @@ class GameRun(db.Model):
     playerName = db.StringProperty()
     datetime_started = db.DateTimeProperty()
     datetime_lastaction = db.DateTimeProperty()
-
     finished = db.BooleanProperty()
 
     def SaveIfNotSaved(self):
@@ -150,6 +154,12 @@ class GameRun(db.Model):
     
     def GetCurrentNumberOfTries(self):
         return (self.number_of_tries) if not (self.number_of_tries is None) else 0
+
+    def GetCurrentNumberOfTestsShown(self):
+        return (self.number_of_tests_shown) if not (self.number_of_tests_shown is None) else 0
+ 
+    def GetNumberOfTestsInGame(self):
+        return (self.game.GetNumberOfTests()) if not (self.game.number_of_tests is None) else 0
     
     def RegisterTry(self):
         self.number_of_tries = self.GetCurrentNumberOfTries() + 1

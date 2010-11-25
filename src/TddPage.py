@@ -48,75 +48,90 @@ class TddPage(webapp.RequestHandler):
         self.template_values = self.add_selected_game(self.template_values)
 
     def set_selected_game(self, selected_game_key):
-        self.selected_game = selected_game_key
+        if not selected_game_key is None and selected_game_key != '':
+            self.selected_game = db.get(selected_game_key)
 
     def get_selected_game(self):
-        return self.selected_game if not(self.selected_game is None) else self.request.get('selected_game')
+        game = self.selected_game if not(self.selected_game is None) else None
+        if game is None and not(self.request.get('selected_game') is None) and self.request.get('selected_game') != '':
+            game = db.get(self.request.get('selected_game'))
+        return game
+
+    def is_the_game_to_select(self, agame):
+        return str(agame.key()) == self.request.get('game_to_select')
+
+    def is_the_selected_game(self, agame):
+        if self.get_selected_game() is None:
+            return False
+        else:
+            return agame.key() == self.get_selected_game().key()
+
+    def is_new_game_selected(self):
+        return self.request.get('command') == "SelectGame"
+
+    def select_single_owned_game(self, games, user):
+        myowngame = None
+        for agame in games:
+            if agame.IsAuthor(user):
+                if myowngame is None:
+                    myowngame = agame
+                    myowngame.selected = True
+                else:
+                    myowngame.selected = False
+        
+        return myowngame
+
+    def is_a_single_owned_game_available(self, myowngame):
+        return not myowngame is None and myowngame.selected
+
+    def select_last_game(self, games):
+        game = games[len(games) - 1]
+        game.selected = True
+        return game
+
+    def get_published_games(self):
+        published_games = []
+        for agame in db.GqlQuery("Select * From Game"):
+            if not agame.published:
+                continue
+            published_games.append(agame)
+        return published_games
 
     def add_selected_game(self, template_values):
-        games = db.GqlQuery("Select * From Game")
-        n = 0
+        template_values['games'] = self.get_published_games()
 
-        for agame in games:
-            #print str(n) +": "+ agame.name
-            if not agame.published:
-                continue
-            n += 1
+        selected_game = None           
         
-        template_values['games'] = [None] * n
-        n = 0
-        game = None           
-        
-        for agame in games:
-            #print str(n) +": "+ agame.name
-            if not agame.published:
-                continue
-            
-            if game is None:
-                if  (self.request.get('command') == "SelectGame"):                  
-                    if (str(agame.key()) ==  self.request.get('game_to_select')):  
-                        game = agame
+        for agame in template_values['games']:
+            if selected_game is None:
+                if self.is_new_game_selected():                  
+                    if self.is_the_game_to_select(agame):  
+                        selected_game = agame
                         agame.selected = True
                 elif not (self.get_selected_game() is None):
-                    if (str(agame.key()) ==  self.get_selected_game()):
-                        game = agame
+                    if self.is_the_selected_game(agame):
+                        selected_game = agame
                         agame.selected = True
-            
-            template_values['games'][n] = agame
-            #print str(n) +": "+ template_values['games'][n].name
-            n += 1
         
         myowngame = None
         
-        if game is None:
-            for agame in template_values['games']:
-                if not(agame.author is None) and agame.author == template_values['user']:
-                    if myowngame is None:
-                        myowngame = agame
-                        myowngame.selected = True
-                    else:
-                        myowngame.selected = False              
+        if selected_game is None:
+            myowngame = self.select_single_owned_game(template_values['games'], template_values['user'])              
         
-        if not(myowngame is None) and myowngame.selected:
-            game = myowngame
+        if self.is_a_single_owned_game_available(myowngame):
+            selected_game = myowngame
         
-        if game is None:
-            game = template_values['games'][n-1]
-            game.selected = True
+        if selected_game is None:
+            selected_game = self.select_last_game(template_values['games'])
         
-        if game is None:
-            template_values['message'] = "Sorry, the game you requested doesn't exist.";                     
+        if selected_game is None:
+            template_values['message'] = "Sorry, the selected_game you requested doesn't exist.";                     
             self.render_error_with(template_values)
-        
-        #print game.author()
-        if not(game.author is None) and game.author == template_values['user']:
-            template_values['user_owns_game'] = True
         else:
-            template_values['user_owns_game'] = False
-        
-        template_values['selected_game'] = game
-        
-        return template_values
+            template_values['user_owns_game'] = selected_game.IsAuthor(template_values['user'])        
+            template_values['selected_game'] = selected_game
+            
+            return template_values
        
     def render_with(self, name, values):
         path = os.path.join(os.path.dirname(__file__), 'templates/'+ name +'.html')
