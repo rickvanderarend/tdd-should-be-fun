@@ -1,1 +1,29 @@
 This will contain version 2 of the TDD_Should_Be_Fun() Application @ http://sogyotdd.appspot.com
+
+I have described the setup I use to develop here (26-11-2010)
+
+Python
+You'll need the python interpreter, get it from http://python.org/download/ and install it
+The AppEngine requires Python 2.5+, I'm using 2.6 myself and haven't found any issues.
+
+AppEngine SDK
+You'll need the AppEngine SDK. Get it from 
+http://code.google.com/intl/nl-NL/appengine/downloads.html#Google_App_Engine_SDK_for_Python
+This is a great site to start, by the way, with a lot of examples and explanations on everything AppEngine and Python
+I'm using the basis SDK setup, no extra libraries, except for gaeunit.py, which you will find included in the src dir.
+Currently, I'm working on version 1.3.8 of the SDK, but haven't found any issues when working with the 1.3.5 version recently
+
+IDE
+Currently, I'm using the Helios Release of Eclipse for Javascript developers,
+which is to be found here: http://www.eclipse.org/downloads/packages/eclipse-ide-javascript-web-developers/heliossr1
+and I am using it with PyDev installed from http://pydev.org/updates
+Works fine for me, but I'm don't have a very strong preference (yet) in this field. IDLE should work fine too.
+
+I haven't checked in any IDE project files, I suggest you don't either.
+The main project is the src/ directory any way, which can be run by the Google App Engine Launcher
+
+GIT
+I'm using msysgit, which can be found here http://code.google.com/p/msysgit/
+Occasionally, I use TortoiseGit, which can be found here: http://code.google.com/p/tortoisegit/
+
+I definitely do not use any IDE-integrated GIT tool, as I have bad experiences with such tools (they assume too much)
