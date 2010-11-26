@@ -4,7 +4,8 @@ I have described the setup I use to develop here (26-11-2010)
 
 Python
 You'll need the python interpreter, get it from http://python.org/download/ and install it
-The AppEngine requires Python 2.5+, I'm using 2.6 myself and haven't found any issues.
+The AppEngine requires Python 2.5+, I'm using 2.6 myself and haven't found any issues. 
+Python 2.7 does have issues with the SDK though, don't use it (yet)
 
 AppEngine SDK
 You'll need the AppEngine SDK. Get it from 
