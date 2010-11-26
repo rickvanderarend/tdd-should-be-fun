@@ -1,7 +1,14 @@
 This contains the source of the TDD_Should_Be_Fun() Application @ http://sogyotdd.appspot.com
-Actually, this contains version 2 it, version 1 is currently still online.
+Actually, this contains version 2, version 1 is currently still the one that's online.
 
 I have described the setup I use in this readme (26-11-2010)
+
+To run it locally, install Python and the AppEngine SDK, 
+download a version of the source and follow the usual instructions (see AppEngine site, link below)
+
+To help developing, install GIT and have some editor ready (or use the same IDE setup as I do),
+Link your git installation to github and fork the code. Send me a pull request.
+There is a very high probability I will honor your request, as I like teamwork. :)
 
 Python
 You'll need the python interpreter, get it from http://python.org/download/ and install it
@@ -27,5 +34,4 @@ The main project is the src/ directory any way, which can be run by the Google A
 GIT
 I'm using msysgit, which can be found here http://code.google.com/p/msysgit/
 Occasionally, I use TortoiseGit, which can be found here: http://code.google.com/p/tortoisegit/
-
-I definitely do not use any IDE-integrated GIT tool, as I have bad experiences with such tools (they assume too much)
+I definitely do not use any IDE-integrated GIT tool, as I have had bad experiences with such tools (they assume too much)
