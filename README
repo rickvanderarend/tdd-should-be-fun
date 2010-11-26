@@ -10,13 +10,15 @@ To help developing, install GIT and have some editor ready (or use the same IDE 
 Link your git installation to github and fork the code. Send me a pull request. (instructions on http://github.com)
 There is a very high probability I will honor your request, as I like teamwork. :)
 
-*Setup / Instructions
+* Setup / Instructions
 I have described the setup I use in this readme and some links to instructions here.
 
 Python
-You'll need the python interpreter, get it from http://python.org/download/ and install it
-The AppEngine requires Python 2.5+, I'm using 2.6 myself and haven't found any issues. 
-The AppEngine SDK does have issues with Python 2.7 though, so don't use it (yet)
+You'll need the python interpreter, get it from http://www.python.org/download/releases/2.5.5/ and follow instructions
+or you can find the Python 2.5.4 installer at: http://www.python.org/ftp/python/2.5.4/ (2.5.5 is source only)
+
+The AppEngine requires Python 2.5, I'm using an older version of 2.6 myself and haven't found any issues. 
+The AppEngine SDK does have issues with Python 2.7 and the latest 2.6 though, so don't use them (yet).
 
 AppEngine SDK
 You'll need the AppEngine SDK. Get it from 
