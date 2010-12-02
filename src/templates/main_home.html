@@ -33,8 +33,8 @@
 {% endfor %}
 {% if results.new_test %}
 	<div style="background-color:grey; border: solid black 1px;">
-		<table><tr><td><div style="color: black; padding: 1px 10px 1px 10px; font-size: 25px;">{{ new_test.number }}</div></td>
-		<td><div style="color: white; padding: 1px 10px 1px 10px;"><pre>{{ new_test.code }}</pre></div></td></tr>
+		<table><tr><td><div style="color: black; padding: 1px 10px 1px 10px; font-size: 25px;">{{ results.new_test.number }}</div></td>
+		<td><div style="color: white; padding: 1px 10px 1px 10px;"><pre>{{ results.new_test.code }}</pre></div></td></tr>
 		</table>
 	</div>
 {% endif %}

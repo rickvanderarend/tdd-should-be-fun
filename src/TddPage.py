@@ -55,6 +55,7 @@ class TddPage(webapp.RequestHandler):
         game = self.selected_game if not(self.selected_game is None) else None
         if game is None and not(self.request.get('selected_game') is None) and self.request.get('selected_game') != '':
             game = db.get(self.request.get('selected_game'))
+            
         return game
 
     def get_published_games(self):
@@ -70,13 +71,12 @@ class TddPage(webapp.RequestHandler):
 
         selected_game = self.get_selected_game()         
         lastowngame = None
-        
+
         if not template_values['games'] is None:
             for agame in template_values['games']:
                 if self.request.get('command') == "SelectGame":                  
                     if str(agame.key()) == self.request.get('game_to_select'):  
-                        selected_game = agame
-                        
+                        selected_game = agame     
                 if agame.IsAuthor(template_values['user']):
                     lastowngame = agame
               
@@ -85,15 +85,13 @@ class TddPage(webapp.RequestHandler):
         
         if selected_game is None and not template_values['games'] is None and len(template_values['games']) > 0:
             selected_game = template_values['games'][len(template_values['games']) - 1]
-        
+
         if selected_game is None:
             selected_game = Game.Create('Default')
             selected_game.put()
 
         template_values['user_owns_game'] = selected_game.IsAuthor(template_values['user']) 
         template_values['selected_game'] = selected_game
-        template_values['selected_game'].selected = True
-            
             
         return template_values
        
