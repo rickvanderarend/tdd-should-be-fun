@@ -14,12 +14,13 @@
 {% endblock %}
 
 {% block content %}
-<div class="post" style="width: 100%">
+<div class="post" style="width: 100%; margin-bottom: 0px;">
 	<H2>Make the implementation that lets the tests succeed</H2>
-	 <i>You have made <b>{{ game_tries }}</b> attempt{{ game_tries|pluralize }} up until now 
+	 <i>You, <input type="test" name="playerName" value="{% if playerName %}{{ playerName }}{% else %}Anonymous{% endif %}" {% if is_logged_in %} {% else %}disabled{% endif %} alt="Your name (can be used for highscores)"> have made <b>{{ game_tries }}</b> attempt{{ game_tries|pluralize }} up until now 
 	 and you are working on <b>{{ game_number_of_tests }}</b> test{{ game_number_of_tests|pluralize }}:</i>
 </div>
 {% for testresult in results.test_results %}
+	{% if not testresult.result %}
 	<div style="background-color:{% if testresult.result %}green{% else %}red{% endif %}; border: solid black 1px;">
 		<table><tr><td><div style="color: black; padding: 1px 10px 1px 10px; font-size: 25px;">{{ testresult.test.number }}</div></td>
 		<td><div style="color: white; padding: 1px 10px 1px 10px; width:620px;"><pre>{{ testresult.test.code }}</pre></div></td></tr>
@@ -28,6 +29,7 @@
 		{% endif %}
 		</table>
 	</div>
+	{% endif %}
 {% endfor %}
 {% if results.new_test %}
 	<div style="background-color:grey; border: solid black 1px;">
@@ -38,11 +40,8 @@
 {% endif %}
 {% if game_show_input %}
 <div style="padding: 5px;"><h2>Your implementation:</h2></div>
-
-  <div>Your name (can be used for highscores): <input type="test" name="playerName" value="{% if playerName %}{{ playerName }}{% else %}Anonymous{% endif %}" {% if is_logged_in %} {% else %}disabled{% endif %}></div><br />
-  <div><textarea name="code" {% if is_logged_in %}rows="20"{% else %}rows="10"{% endif %} cols="81" onkeydown="insertTab(this, event);">{{ game_current_input }}</textarea></div>
+  <div><textarea name="code" {% if is_logged_in %}rows="15"{% else %}rows="10"{% endif %} cols="81" onkeydown="insertTab(this, event);">{{ game_current_input }}</textarea></div>
   <div><input type="submit" name="command" value="Test" {% if is_logged_in %} {% else %}disabled{% endif %}>{% if is_logged_in %} - <input type="submit" name="command" value="GetTheStartImplementationAgain"/>{% else %} - Please <a href="{{ login_link }}" style="color: black;" >login</a> to play (Google account required / Google apps account not accepted){% endif %}</div><br />
-
 </form>
 {% else %}
 	<h2 style="color:green;">All {{ game_number_of_tests }} tests Succeeded in {{ game_tries }} attempts!</h2>
@@ -51,6 +50,18 @@
 	<div style="margin: 0px 0 0 10px;"><b>Want to try again?</b> Start over: <input type="submit" name="command" value="GetTheStartImplementationAgain" style="margin: 0;" /></div> 
 	
 {% endif %}
+{% for testresult in results.test_results reversed %}
+	{% if testresult.result %}
+	<div style="background-color:{% if testresult.result %}green{% else %}red{% endif %}; border: solid black 1px;">
+		<table><tr><td><div style="color: black; padding: 1px 10px 1px 10px; font-size: 25px;">{{ testresult.test.number }}</div></td>
+		<td><div style="color: white; padding: 1px 10px 1px 10px; width:620px;"><pre>{{ testresult.test.code }}</pre></div></td></tr>
+		{% if testresult.error %}
+			<tr><td>&nbsp;</td><td>{{ testresult.error }}</td></tr>
+		{% endif %}
+		</table>
+	</div>
+	{% endif %}
+{% endfor %}
 
 {% endblock %}
 
