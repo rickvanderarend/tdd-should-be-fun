@@ -5,6 +5,7 @@ Created on 24 sep. 2010
 '''
 import unittest
 from model.domain import Game
+from model.domain import TestRun
 import pprint
 
 pp = pprint.PrettyPrinter(indent=4)
@@ -27,6 +28,16 @@ class Test(unittest.TestCase):
         gameRun = Game.Create().AddTest("assert(result)").Play()     
         gameRun.GetResultsOfNewTestRun("result = false")        
         assert(not gameRun.IsFinished())
+
+    def test_simple_game_with_one_test_that_has_one_result_after_correct_implementation(self):
+        gameRun = Game.Create().AddTest("assert(result)").Play()       
+        results = gameRun.GetResultsOfNewTestRun("result = True")  
+        assert(len(results['test_results']) == 1)     
+        
+    def test_simple_game_with_one_test_that_has_no_error_after_correct_implementation(self):
+        gameRun = Game.Create().AddTest("assert(result)").Play()       
+        results = gameRun.GetResultsOfNewTestRun("result = True")   
+        assert(results['test_results'][0].error is None)  
 
     def test_simple_game_with_one_test_that_is_finished_after_correct_implementation(self):
         gameRun = Game.Create().AddTest("assert(result)").Play()       
@@ -51,7 +62,7 @@ class Test(unittest.TestCase):
 
     def test_that_simple_game_with_two_tests_after_running_once_with_correct_implementation_is_not_finished_yet(self):
         gameRun = self.GetRunningGameWithTwoTests()     
-        results = gameRun.GetResultsOfNewTestRun(self.GetCorrectImplementationForGameWithTwoTests())         
+        gameRun.GetResultsOfNewTestRun(self.GetCorrectImplementationForGameWithTwoTests())         
         assert(not gameRun.IsFinished())
 
     def test_that_simple_game_with_two_tests_after_running_twice_with_correct_implementation_yields_all_successful_results(self):

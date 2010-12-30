@@ -7,6 +7,9 @@ import re
 from google.appengine.ext import db
 from google.appengine.api import users
 from datetime import datetime
+import pprint
+
+pp = pprint.PrettyPrinter(indent=4)
 
 class Game(db.Model):
     name = db.StringProperty()
@@ -71,46 +74,60 @@ class Game(db.Model):
         if not self.is_saved():
             self.save()
 
-    def StartRun(self, player, playerName):
+    def StartMatch(self, player, playerName):
         self.SaveIfNotSaved()
         
-        gameRun = GameRun()
-        gameRun.game = self
-        gameRun.number_of_tests_shown = 1
-        gameRun.number_of_tests_ok = 0
-        gameRun.number_of_tries = 0
-        gameRun.player = player
-        gameRun.playerName = playerName
-        gameRun.datetime_started = datetime.now()
-        gameRun.datetime_lastaction = datetime.now()
-        gameRun.finished = False
-        gameRun.put()
+        match = Match()
+        match.game = self
+        match.number_of_tests_shown = 1
+        match.number_of_tests_ok = 0
+        match.number_of_tries = 0
+        match.player = player
+        match.playerName = playerName
+        match.datetime_started = datetime.now()
+        match.datetime_lastaction = datetime.now()
+        match.finished = False
+        match.put()
         
-        return gameRun
+        return match
     
     def Play(self, player = users.get_current_user(), player_name = None):
         if player_name is None:
-            player_name = player.nickname()
+            if player is None:
+                player_name = 'Anonymous'
+            else:
+                player_name = player.nickname()
             
-        gameRun = None
+        match = None
         try :
-            gameRun = db.GqlQuery("Select * From GameRun Where game = :1 AND player = :2 Order by datetime_lastaction DESC", self, player).get()
-            gameRun.player_name = player_name
+            match = db.GqlQuery("Select * From Match Where game = :1 AND player = :2 Order by datetime_lastaction DESC", self, player).get()
+            match.player_name = player_name
         except:
-            gameRun = None
+            match = None
 
-        if gameRun == None:
-            gameRun = self.StartRun(player, player_name)
+        if match == None:
+            match = self.StartMatch(player, player_name)
         else:
-            if gameRun.number_of_tests_shown is None:
-                gameRun.number_of_tests_shown = gameRun.number_of_tests_ok
+            if match.number_of_tests_shown is None:
+                match.number_of_tests_shown = match.number_of_tests_ok
         
-        return gameRun
-    
+        return match
+
+# better call this Match   
 class GameRun(db.Model):
     game = db.ReferenceProperty(Game) 
     number_of_tests_shown = db.IntegerProperty()
     number_of_tests_ok = db.IntegerProperty() # deprecate as soon as possible
+    number_of_tries = db.IntegerProperty()
+    player = db.UserProperty()
+    playerName = db.StringProperty()
+    datetime_started = db.DateTimeProperty()
+    datetime_lastaction = db.DateTimeProperty()
+    finished = db.BooleanProperty()
+    
+class Match(db.Model):
+    game = db.ReferenceProperty(Game) 
+    number_of_tests_shown = db.IntegerProperty()
     number_of_tries = db.IntegerProperty()
     player = db.UserProperty()
     playerName = db.StringProperty()
@@ -129,9 +146,10 @@ class GameRun(db.Model):
             implementation = last
         elif code is None:
             implementation = self.GetStartImplementation()
+            implementation.save()
         else:
             self.SaveIfNotSaved()
-            implementation = Implementation(gameRun = self, code = code, author = self.player, date_created = datetime.now())
+            implementation = Implementation(match = self, code = code, author = self.player, date_created = datetime.now())
             implementation.save()
         
         return implementation
@@ -139,7 +157,7 @@ class GameRun(db.Model):
     def GetLastImplementation(self):
         last_implementation = None
         try :
-            last_implementation = db.GqlQuery("Select * From Implementation Where gameRun = :1 Order by date_created DESC", self).get()
+            last_implementation = db.GqlQuery("Select * From Implementation Where match = :1 Order by date_created DESC", self).get()
         except:
             last_implementation = None
             
@@ -147,7 +165,7 @@ class GameRun(db.Model):
 
     def GetStartImplementation(self):
         self.SaveIfNotSaved()
-        return Implementation(gameRun = self, code = self.game.start_implementation, author = self.player, date_created = datetime.now())
+        return Implementation(match = self, code = self.game.start_implementation, author = self.player, date_created = datetime.now())
         
     def IsFinished(self):
         return self.finished
@@ -159,7 +177,32 @@ class GameRun(db.Model):
         return (self.number_of_tests_shown) if not (self.number_of_tests_shown is None) else 0
  
     def GetNumberOfTestsInGame(self):
-        return (self.game.GetNumberOfTests()) if not (self.game.number_of_tests is None) else 0
+        return self.game.GetNumberOfTests()
+ 
+    tests = None
+    tests_to_show = None
+    new_test = None
+ 
+    def InitializeTestsCache(self):
+        if self.tests is None:
+            self.tests = self.game.GetTests()
+            self.tests_to_show = [None] * self.GetCurrentNumberOfTestsShown()
+            testnr = 0
+            
+            for test in self.tests:               
+                if testnr < self.GetCurrentNumberOfTestsShown():
+                    self.tests_to_show[testnr] = test
+                elif testnr == self.GetCurrentNumberOfTestsShown():
+                    self.new_test = test
+                testnr += 1
+ 
+    def GetTestsToShow(self):
+        self.InitializeTestsCache()     
+        return self.tests_to_show
+  
+    def GetNewTest(self):
+        self.InitializeTestsCache()     
+        return self.new_test
     
     def RegisterTry(self):
         self.number_of_tries = self.GetCurrentNumberOfTries() + 1
@@ -180,7 +223,7 @@ class GameRun(db.Model):
     def HasMoreTestsThanShown(self, number_of_tests_in_game):
         return self.number_of_tests_shown < number_of_tests_in_game
 
-    def AreTestResultsEnoughToFinish(self, test_results, number_of_tests_in_game):      
+    def AreTestResultsNotEnoughToFinish(self, test_results, number_of_tests_in_game):      
         return number_of_tests_in_game > 0 and self.HasMoreTestsThanShown(number_of_tests_in_game) or not self.AreAllResultsSuccessful(test_results)
 
     def ShowOneMoreTest(self):
@@ -188,31 +231,29 @@ class GameRun(db.Model):
 
     def GetTestResults(self, implementation, is_attempt = False):      
         tests =  self.game.GetTests()
-        
+            
         results = {}
         results['for'] = implementation                 
-        results['test_results'] = [None] * self.number_of_tests_shown
-        number_of_tests_in_game = 0
+        number_of_tests = 0
+        shown_tests = []
         
         for test in tests:
-            if number_of_tests_in_game < self.number_of_tests_shown:
-                results['test_results'][number_of_tests_in_game] = test.Run(implementation)
-                if is_attempt:
-                    results['test_results'][number_of_tests_in_game].put()              
-            elif number_of_tests_in_game == self.number_of_tests_shown:
+            if number_of_tests < self.number_of_tests_shown:
+                shown_tests.append(test)         
+            elif number_of_tests == self.number_of_tests_shown:
                 new_test = test
                 
-            number_of_tests_in_game = number_of_tests_in_game + 1
+            number_of_tests = number_of_tests + 1
         
-        if (self.number_of_tests_shown > number_of_tests_in_game):
-            self.number_of_tests_shown = number_of_tests_in_game
-            results['test_results'] = results['test_results'][0:self.number_of_tests_shown]
+        attempt = Attempt.Create(match = self, implementation = implementation, number = self.number_of_tries + 1, tests = shown_tests)
+        
+        results['test_results'] = attempt.results
                     
-        if self.AreTestResultsEnoughToFinish(results['test_results'], number_of_tests_in_game):
+        if self.AreTestResultsNotEnoughToFinish(results['test_results'], number_of_tests):
             if self.AreAllResultsSuccessful(results['test_results']):             
-                if self.HasMoreTestsThanShown(number_of_tests_in_game):
+                if self.HasMoreTestsThanShown(number_of_tests):
                     results['new_test'] = new_test;
-                self.ShowOneMoreTest()   
+                self.ShowOneMoreTest() 
             self.finished = False
         else:
             self.finished = True
@@ -221,6 +262,48 @@ class GameRun(db.Model):
         if is_attempt: self.put()
         
         return results
+
+class Implementation(db.Model):
+    match = db.ReferenceProperty(Match) 
+    code = db.TextProperty()
+    author = db.UserProperty()
+    date_created = db.DateTimeProperty()
+
+class Attempt(db.Model):
+    match = db.ReferenceProperty(Match)
+    implementation = db.ReferenceProperty(Implementation)
+    number = db.IntegerProperty()
+    attempt_made_on = db.DateTimeProperty(auto_now_add=True)
+    player = db.UserProperty()
+    
+    number_of_tests_to_run = db.IntegerProperty()
+    number_of_tests_run = db.IntegerProperty()
+    number_of_testruns_successful = db.IntegerProperty()
+    
+    results = []
+ 
+    @classmethod
+    def Create(cls, match = None, implementation = None, number = 1, tests = [], player = users.get_current_user(), time = datetime.now()):
+        Attempt = cls()
+        Attempt.match = match
+        Attempt.implementation = implementation
+        Attempt.number = number
+ 
+        Attempt.attempt_made_on = time
+        Attempt.player = player
+        Attempt.results = []
+        Attempt.number_of_tests = len(tests)
+        Attempt.put()
+        Attempt.Run(tests)
+        
+        return Attempt
+   
+    def Run(self, tests):
+        for test in tests:
+            testrun = test.Run(self.implementation)
+            testrun.attempt = self
+            testrun.put()
+            self.results.append(testrun) 
     
 class Test(db.Model):
     game = db.ReferenceProperty(Game) 
@@ -288,16 +371,11 @@ class Test(db.Model):
                 global_scope['__builtins__'][key] = __builtins__[key]
         
         return global_scope
-    
-class Implementation(db.Model):
-    gameRun = db.ReferenceProperty(GameRun) 
-    code = db.TextProperty()
-    author = db.UserProperty()
-    date_created = db.DateTimeProperty()
+
 
 class TestRun(db.Model):
     game = db.ReferenceProperty(Game)
-    gameRun = db.ReferenceProperty(GameRun) 
+    attempt = db.ReferenceProperty(Attempt) 
     implementation = db.ReferenceProperty(Implementation) 
     test = db.ReferenceProperty(Test)
     result = db.BooleanProperty()

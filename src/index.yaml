@@ -29,6 +29,19 @@ indexes:
 # automatically uploaded to the admin console when you next deploy
 # your application using appcfg.py.
 
+- kind: Implementation
+  properties:
+  - name: match
+  - name: date_created
+    direction: desc
+
+- kind: Match
+  properties:
+  - name: game
+  - name: player
+  - name: datetime_lastaction
+    direction: desc
+
 - kind: Test
   properties:
   - name: game
